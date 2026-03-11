@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systemische Beratung | Ihr Weg zu neuen Perspektiven</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">Dr. Stefan Ortlieb</a>
+            <div class="nav-actions">
+                <ul class="nav-menu">
+                    <li><a href="#therapieansatz">Systemische Beratung</a></li>
+                    <li><a href="#praxis">Praxis</a></li>
+                    <li><a href="#kontakt">Kontakt</a></li>
+                </ul>
+                <div class="lang-switch" aria-label="Sprachauswahl">
+                    <a href="index.html" class="lang-link active" aria-current="page">DE</a>
+                    <a href="index-en.html" class="lang-link">EN</a>
+                </div>
+                <button class="nav-toggle" aria-label="Menü öffnen">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Willkommen -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Willkommen in meiner Praxis</h1>
+            <p class="hero-subtitle">Gemeinsam neue Wege entdecken</p>
+            <a href="#kontakt" class="btn-primary">Termin vereinbaren</a>
+        </div>
+    </section>
+
+    <!-- About Me -->
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="latest-2989235189.webp" alt="Porträt von Dr. Stefan Ortlieb" class="about-photo">
+                </div>
+                <div class="about-content">
+                    <h2>Über mich</h2>
+                    <p>Als systemischer Berater begleite ich Menschen auf ihrem Weg zu mehr Klarheit und neuen Perspektiven. Mit meiner langjährigen Erfahrung und einem ganzheitlichen Blick unterstütze ich Sie dabei, Ihre Ressourcen zu entdecken und Lösungen zu entwickeln.</p>
+                    <p>In einem vertrauensvollen Rahmen schaffen wir gemeinsam Raum für Veränderung und persönliches Wachstum.</p>
+                    <div class="qualifications">
+                        <h3>Qualifikationen</h3>
+                        <ul>
+                            <li>Promovierter Diplompsychologe (Univ.)</li>
+                            <li>Systemischer Berater (i.A.)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beratung -->
+    <section id="therapieansatz" class="section therapie">
+        <div class="container">
+            <h2>Beratungsangebot</h2>
+            <p class="section-intro">Die systemische Beratung betrachtet den Menschen in seinem gesamten Beziehungssystem. Probleme werden nicht isoliert gesehen, sondern im Kontext von Familie, Beruf und sozialem Umfeld.</p>
+            
+            <div class="approach-grid">
+                <div class="approach-card">
+                    <div class="card-icon">🔄</div>
+                    <h3>Ganzheitliche Sicht</h3>
+                    <p>Wir betrachten gemeinsam alle Lebensbereiche und deren Wechselwirkungen, um nachhaltige Lösungen zu finden.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="card-icon">🏃</div>
+                    <h3>Laufanalyse</h3>
+                    <p>Beim gemeinsamen Laufen nutzen wir Bewegung als Zugang zu neuen Perspektiven – klar, alltagsnah und lösungsorientiert.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Lösungsfokussiert</h3>
+                    <p>Statt Probleme zu analysieren, konzentrieren wir uns auf konkrete Schritte in Richtung Ihrer Ziele.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="card-icon">🤝</div>
+                    <h3>Wertschätzend</h3>
+                    <p>In einem geschützten Rahmen begegne ich Ihnen mit Respekt, Empathie und echter Anteilnahme.</p>
+                </div>
+            </div>
+
+            <div class="topics">
+                <h3>Mögliche Themen</h3>
+                <div class="topic-tags">
+                    <span class="tag">Beziehungsfragen</span>
+                    <span class="tag">Familienkonflikte</span>
+                    <span class="tag">Berufliche Veränderung</span>
+                    <span class="tag">Lebensübergänge</span>
+                    <span class="tag">Stressbewältigung</span>
+                    <span class="tag">Persönliche Entwicklung</span>
+                    <span class="tag">Trauer & Verlust</span>
+                    <span class="tag">Kommunikation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sisyphus Mini-Game -->
+    <section id="sisyphus" class="section sisyphus-game">
+        <div class="container">
+            <h2>Sisyphus Mini-Spiel</h2>
+            <p class="section-intro">Hilf Sisyphus, den Stein den Berg hinaufzuschieben. Nutze die Pfeiltasten oder A/D. Wenn du zu langsam bist, rollt der Stein wieder herunter.</p>
+
+            <div class="game-shell" aria-live="polite">
+                <div class="game-header">
+                    <p class="game-status" id="gameStatus">Drücke Start und beginne den Aufstieg.</p>
+                    <button type="button" class="btn-primary game-reset" id="gameResetBtn">Start / Neu starten</button>
+                </div>
+                <canvas id="sisyphusCanvas" width="900" height="340" role="img" aria-label="Sisyphus schiebt einen Stein einen Hügel hinauf"></canvas>
+                <p class="game-help">Tipp: Jeder Schub bringt den Stein ein Stück nach rechts. Ohne Bewegung rollt er zurück.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Praxis -->
+    <section id="praxis" class="section praxis">
+        <div class="container">
+            <h2>Die Praxis</h2>
+            <div class="praxis-grid">
+                <div class="praxis-info">
+                    <p>Meine Praxis befindet sich in zentraler Lage und ist gut mit öffentlichen Verkehrsmitteln erreichbar. In hellen, freundlichen Räumen schaffe ich eine Atmosphäre, in der Sie sich wohlfühlen und öffnen können.</p>
+                    
+                    <div class="praxis-details">
+                        <div class="detail-item">
+                            <h4>📍 Adresse</h4>
+                            <p>Praxisgemeinschaft am Fluss<br>Kapuzinerstraße 9<br>96047 Bamberg</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>🕐 Öffnungszeiten</h4>
+                            <p>Termine nach Vereinbarung</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>💶 Honorar</h4>
+                            <p>Nur Selbstzahler, Höhe des Honorars nach Vereinbarung</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="praxis-image">
+                    <div class="image-placeholder large">
+                        <span>Bild der Praxis</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="kontakt" class="section kontakt">
+        <div class="container">
+            <h2>Kontakt</h2>
+            <p class="section-intro">Haben Sie Fragen oder möchten einen Termin vereinbaren? Ich freue mich auf Ihre Nachricht.</p>
+            
+            <div class="kontakt-grid">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-Mail *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telefon</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Betreff</label>
+                        <select id="subject" name="subject">
+                            <option value="">Bitte wählen...</option>
+                            <option value="termin">Terminanfrage</option>
+                            <option value="info">Allgemeine Anfrage</option>
+                            <option value="other">Sonstiges</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">Nachricht *</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <button type="submit" class="btn-primary">Nachricht senden</button>
+                    </div>
+                </form>
+                
+                <div class="contact-info">
+                    <h3>Direkter Kontakt</h3>
+                    <div class="contact-item">
+                        <span class="icon">📞</span>
+                        <div>
+                            <strong>Telefon</strong>
+                            <p>0123 / 456 789 0</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">✉️</span>
+                        <div>
+                            <strong>E-Mail</strong>
+                            <p>info@systemische-beratung.de</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">📍</span>
+                        <div>
+                            <strong>Adresse</strong>
+                            <p>Musterstraße 123<br>12345 Musterstadt</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2026 Systemische Beratung. Alle Rechte vorbehalten.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Impressum</a>
+                    <a href="#">Datenschutz</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

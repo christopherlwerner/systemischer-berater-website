@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systemic Counseling | Your Path to New Perspectives</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">Dr. Stefan Ortlieb</a>
+            <div class="nav-actions">
+                <ul class="nav-menu">
+                    <li><a href="#therapieansatz">Systemic Counseling</a></li>
+                    <li><a href="#praxis">Practice</a></li>
+                    <li><a href="#kontakt">Contact</a></li>
+                </ul>
+                <div class="lang-switch" aria-label="Language selection">
+                    <a href="index.html" class="lang-link">DE</a>
+                    <a href="index-en.html" class="lang-link active" aria-current="page">EN</a>
+                </div>
+                <button class="nav-toggle" aria-label="Open menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Welcome -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to my practice</h1>
+            <p class="hero-subtitle">Discovering new paths together</p>
+            <a href="#kontakt" class="btn-primary">Book an appointment</a>
+        </div>
+    </section>
+
+    <!-- About Me -->
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="latest-2989235189.webp" alt="Portrait of Dr. Stefan Ortlieb" class="about-photo">
+                </div>
+                <div class="about-content">
+                    <h2>About me</h2>
+                    <p>As a systemic counselor, I support people on their way to greater clarity and new perspectives. With many years of experience and a holistic view, I help you discover your resources and develop effective solutions.</p>
+                    <p>Together, in a trusting setting, we create space for change and personal growth.</p>
+                    <div class="qualifications">
+                        <h3>Qualifications</h3>
+                        <ul>
+                            <li>PhD Psychologist (University)</li>
+                            <li>Systemic Counselor (in training)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach -->
+    <section id="therapieansatz" class="section therapie">
+        <div class="container">
+            <h2>My therapeutic approach</h2>
+            <p class="section-intro">Systemic counseling views people within their full relationship system. Challenges are not seen in isolation, but in the context of family, work, and social environment.</p>
+            
+            <div class="approach-grid">
+                <div class="approach-card">
+                    <div class="card-icon">🔄</div>
+                    <h3>Holistic perspective</h3>
+                    <p>Together, we look at all areas of life and their interactions to find sustainable solutions.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="card-icon">🏃</div>
+                    <h3>Running Analysis</h3>
+                    <p>While running together, we use movement as a way to access new perspectives in a clear, practical, and solution-oriented process.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Solution-focused</h3>
+                    <p>Instead of analyzing problems, we focus on concrete steps toward your goals.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="card-icon">🤝</div>
+                    <h3>Respectful</h3>
+                    <p>In a protected space, I meet you with respect, empathy, and genuine care.</p>
+                </div>
+            </div>
+
+            <div class="topics">
+                <h3>Possible topics</h3>
+                <div class="topic-tags">
+                    <span class="tag">Relationship issues</span>
+                    <span class="tag">Family conflicts</span>
+                    <span class="tag">Career change</span>
+                    <span class="tag">Life transitions</span>
+                    <span class="tag">Stress management</span>
+                    <span class="tag">Personal development</span>
+                    <span class="tag">Grief & loss</span>
+                    <span class="tag">Communication</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sisyphus Mini-Game -->
+    <section id="sisyphus" class="section sisyphus-game">
+        <div class="container">
+            <h2>Sisyphus Mini-Game</h2>
+            <p class="section-intro">Help Sisyphus push the boulder uphill. Use the arrow keys or A/D. If you slow down, the boulder rolls back down.</p>
+
+            <div class="game-shell" aria-live="polite">
+                <div class="game-header">
+                    <p class="game-status" id="gameStatus">Press start and begin the climb.</p>
+                    <button type="button" class="btn-primary game-reset" id="gameResetBtn">Start / Restart</button>
+                </div>
+                <canvas id="sisyphusCanvas" width="900" height="340" role="img" aria-label="Sisyphus pushing a boulder up a hill"></canvas>
+                <p class="game-help">Tip: each push moves the boulder to the right. Stop moving and it rolls back.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practice -->
+    <section id="praxis" class="section praxis">
+        <div class="container">
+            <h2>The practice</h2>
+            <div class="praxis-grid">
+                <div class="praxis-info">
+                    <p>My practice is centrally located and easy to reach by public transport. In bright, welcoming rooms, I create an atmosphere where you can feel comfortable and open up.</p>
+                    
+                    <div class="praxis-details">
+                        <div class="detail-item">
+                            <h4>📍 Address</h4>
+                            <p>Praxisgemeinschaft am Fluss<br>Kapuzinerstraße 9<br>96047 Bamberg</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>🕐 Opening hours</h4>
+                            <p>Appointments by arrangement</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>💶 Fees</h4>
+                            <p>Self-pay only, fee by arrangement</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="praxis-image">
+                    <div class="image-placeholder large">
+                        <span>Practice image</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="kontakt" class="section kontakt">
+        <div class="container">
+            <h2>Contact</h2>
+            <p class="section-intro">Do you have questions or would you like to book an appointment? I look forward to hearing from you.</p>
+            
+            <div class="kontakt-grid">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject">
+                            <option value="">Please select...</option>
+                            <option value="appointment">Appointment request</option>
+                            <option value="info">General inquiry</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <button type="submit" class="btn-primary">Send message</button>
+                    </div>
+                </form>
+                
+                <div class="contact-info">
+                    <h3>Direct contact</h3>
+                    <div class="contact-item">
+                        <span class="icon">📞</span>
+                        <div>
+                            <strong>Phone</strong>
+                            <p>0123 / 456 789 0</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">✉️</span>
+                        <div>
+                            <strong>Email</strong>
+                            <p>info@systemische-beratung.de</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">📍</span>
+                        <div>
+                            <strong>Address</strong>
+                            <p>Praxisgemeinschaft am Fluss<br>Kapuzinerstraße 9<br>96047 Bamberg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2026 Systemic Counseling. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Legal notice</a>
+                    <a href="#">Privacy policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
