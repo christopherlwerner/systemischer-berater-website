@@ -287,7 +287,7 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
     }
 
     function setPushFromKey(event, active) {
-        if (event.code === 'ArrowRight' || event.code === 'KeyD' || event.code === 'ArrowUp' || event.code === 'KeyW') {
+        if (event.code === 'ArrowRight' || event.code === 'KeyD' || event.code === 'KeyW') {
             if (!state.tumbleActive && state.crashTimer <= 0 && !state.won) {
                 if (active) {
                     if (!event.repeat) {
