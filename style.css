@@ -289,7 +289,12 @@ body {
 
 /* Therapie Section */
 .therapie {
-    background: var(--secondary);
+    background: var(--white);
+}
+
+.therapie .section-intro {
+    max-width: none;
+    width: 87.5%;
 }
 
 .approach-grid {
@@ -300,7 +305,7 @@ body {
 }
 
 .approach-card {
-    background: var(--white);
+    background: var(--secondary);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: var(--shadow);
@@ -328,24 +333,6 @@ body {
     font-size: 0.95rem;
 }
 
-.topics {
-    text-align: center;
-    margin-top: 3rem;
-}
-
-.topics h3 {
-    font-size: 1.5rem;
-    color: var(--primary-dark);
-    margin-bottom: 1.5rem;
-}
-
-.topic-tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
-}
-
 .tag {
     background: var(--white);
     color: var(--text);
@@ -362,7 +349,64 @@ body {
     border-color: var(--primary);
 }
 
-/* Running & Therapie Section */
+/* Angebote Section */
+.angebote {
+    background: var(--secondary);
+}
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.offer-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.offer-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+}
+
+.offer-image {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: var(--secondary);
+}
+
+.offer-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.offer-content {
+    padding: 2rem;
+    flex-grow: 1;
+}
+
+.offer-content h3 {
+    font-size: 1.5rem;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+}
+
+.offer-content p {
+    color: var(--text-light);
+    line-height: 1.7;
+    margin: 0;
+}
+
 /* Praxis Section */
 .praxis {
     background: var(--white);
@@ -500,11 +544,12 @@ body {
 
 /* Sisyphus Mini-Game */
 .sisyphus-game {
-    background: var(--white);
+    background: var(--secondary);
 }
 
 .game-shell {
-    background: var(--secondary);
+    position: relative;
+    background: var(--white);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: var(--shadow);
@@ -535,6 +580,41 @@ body {
     height: auto;
     border-radius: 10px;
     background: linear-gradient(180deg, var(--white) 0%, var(--secondary) 100%);
+}
+
+.game-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: rgba(30, 66, 64, 0.72);
+    color: var(--white);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.game-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.game-overlay p {
+    margin: 0;
+    text-align: center;
+}
+
+.game-overlay-action {
+    padding: 0.65rem 1.6rem;
+    font-size: 0.95rem;
 }
 
 .game-help {
@@ -599,6 +679,10 @@ body {
         order: -1;
     }
 
+    .offers-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -663,6 +747,10 @@ body {
 
     .approach-grid {
         grid-template-columns: 1fr;
+    }
+
+    .therapie .section-intro {
+        width: 100%;
     }
 
     .game-header {

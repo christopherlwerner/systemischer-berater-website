@@ -136,9 +136,14 @@ window.addEventListener('scroll', () => {
 const sisyphusCanvas = document.getElementById('sisyphusCanvas');
 const gameStatus = document.getElementById('gameStatus');
 const gameResetBtn = document.getElementById('gameResetBtn');
+const roundOverlay = document.getElementById('roundOverlay');
+const level2Btn = document.getElementById('level2Btn');
 
 if (sisyphusCanvas && gameStatus && gameResetBtn) {
     const ctx = sisyphusCanvas.getContext('2d');
+    const logicalCanvasWidth = 900;
+    const logicalCanvasHeight = 340;
+    let canvasDpr = 1;
     const isEnglish = pageLanguage.startsWith('en');
     const rootStyles = getComputedStyle(document.documentElement);
     const colors = {
@@ -152,11 +157,15 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
     };
 
     const messages = {
-        ready: isEnglish ? 'Press start and begin the climb.' : 'Drücke Start und beginne den Aufstieg.',
-        pushing: isEnglish ? 'Keep pushing... step by step uphill.' : 'Weiter schieben... Schritt für Schritt bergauf.',
+        ready: isEnglish ? 'Level 1: Press start and begin the climb.' : 'Level 1: Drücke Start und beginne den Aufstieg.',
+        readyLevel2: isEnglish ? 'Level 2: Start again. This time, he is not alone.' : 'Level 2: Starte erneut. Dieses Mal ist er nicht allein.',
+        pushing: isEnglish ? 'Level 1: Keep pushing... step by step uphill.' : 'Level 1: Weiter schieben... Schritt für Schritt bergauf.',
+        pushingLevel2: isEnglish ? 'Level 2: Keep going. Your companion is cheering you on.' : 'Level 2: Weiter so. Dein Berater feuert dich an.',
         exhausted: isEnglish ? 'He pauses, breathing hard...' : 'Er hält kurz erschöpft inne...',
         slipping: isEnglish ? 'Too slow — the boulder is slipping back.' : 'Zu langsam — der Stein rollt zurück.',
         won: isEnglish ? 'Summit reached — for one breath of glory.' : 'Gipfel erreicht — für einen Atemzug Ruhm.',
+        rollingAway: isEnglish ? 'Success. The boulder rolls down the other side...' : 'Geschafft. Der Stein rollt auf der anderen Seite hinab...',
+        wonLevel2: isEnglish ? 'Level 2 complete: together at the top. No tumble this time.' : 'Herzlichen Glückwunsch - geschafft!',
         tumbling: isEnglish ? 'It breaks loose! Boulder and Sisyphus are tumbling down!' : 'Der Stein bricht los! Stein und Sisyphus stürzen den Hang hinab!',
         crashed: isEnglish ? 'Crash at the bottom. Fate resets the climb...' : 'Aufprall im Tal. Das Schicksal setzt den Aufstieg zurück...'
     };
@@ -164,27 +173,57 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
     const state = {
         started: false,
         won: false,
+        level: 1,
+        level2Unlocked: false,
+        level2Selected: false,
+        roundCompleted: false,
         progress: 0,
         pushing: false,
         idleTime: 0,
-        pushSpeed: 0.2,
-        rollbackSpeed: 0.065,
-        rollbackIdleBoost: 0.12,
+        pushSpeed: 0.26,
+        rollbackSpeed: 0.04,
+        rollbackIdleBoost: 0.07,
         lastTime: 0,
         stepPhase: 0,
         tumbleActive: false,
         tumbleTime: 0,
         tumbleVelocity: 0,
+        postWinRollActive: false,
+        postWinRollComplete: false,
+        postWinRollTime: 0,
+        postWinRollDuration: 3.8,
         boulderRotation: 0,
         manRotation: 0,
         crashTimer: 0,
         exhaustionTimer: 0,
         pushStreak: 0,
-        nextExhaustAfter: 2.2,
+        nextExhaustAfter: 3.1,
         effortLevel: 0,
         pushBurstTimer: 0,
         pushBurstDuration: 0.52
     };
+
+    function getReadyMessage() {
+        return state.level === 2 ? messages.readyLevel2 : messages.ready;
+    }
+
+    function getPushingMessage() {
+        return state.level === 2 ? messages.pushingLevel2 : messages.pushing;
+    }
+
+    function hideOverlay() {
+        if (roundOverlay) {
+            roundOverlay.classList.remove('visible');
+            roundOverlay.setAttribute('aria-hidden', 'true');
+        }
+    }
+
+    function showOverlay() {
+        if (roundOverlay) {
+            roundOverlay.classList.add('visible');
+            roundOverlay.setAttribute('aria-hidden', 'false');
+        }
+    }
 
     function randomRange(min, max) {
         return min + Math.random() * (max - min);
@@ -196,9 +235,24 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         }
     }
 
-    function resetGame() {
+    function setupCanvasResolution() {
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+        canvasDpr = dpr;
+        sisyphusCanvas.width = Math.round(logicalCanvasWidth * dpr);
+        sisyphusCanvas.height = Math.round(logicalCanvasHeight * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function resetGame(fullRestart = false) {
+        if (fullRestart) {
+            state.level2Selected = false;
+            state.level2Unlocked = false;
+        }
+
+        state.level = state.level2Selected ? 2 : 1;
         state.started = true;
         state.won = false;
+        state.roundCompleted = false;
         state.progress = 0;
         state.pushing = false;
         state.idleTime = 0;
@@ -206,21 +260,26 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         state.tumbleActive = false;
         state.tumbleTime = 0;
         state.tumbleVelocity = 0;
+        state.postWinRollActive = false;
+        state.postWinRollComplete = false;
+        state.postWinRollTime = 0;
         state.boulderRotation = 0;
         state.manRotation = 0;
         state.crashTimer = 0;
         state.exhaustionTimer = 0;
         state.pushStreak = 0;
-        state.nextExhaustAfter = randomRange(1.7, 3.2);
+        state.nextExhaustAfter = randomRange(2.4, 4.2);
         state.effortLevel = 0.15;
         state.pushBurstTimer = 0;
-        updateStatus(messages.pushing);
+        hideOverlay();
+        updateStatus(getPushingMessage());
     }
 
     function startTumble() {
         state.won = false;
         state.pushing = false;
         state.pushBurstTimer = 0;
+        state.roundCompleted = true;
         state.tumbleActive = true;
         state.tumbleTime = 0;
         state.tumbleVelocity = 0.3;
@@ -229,7 +288,7 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
 
     function setPushFromKey(event, active) {
         if (event.code === 'ArrowRight' || event.code === 'KeyD' || event.code === 'ArrowUp' || event.code === 'KeyW') {
-            if (!state.tumbleActive && state.crashTimer <= 0) {
+            if (!state.tumbleActive && state.crashTimer <= 0 && !state.won) {
                 if (active) {
                     if (!event.repeat) {
                         state.pushing = true;
@@ -240,7 +299,7 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
                     state.pushBurstTimer = 0;
                 }
             }
-            if (active && !state.started) {
+            if (active && !state.started && !state.won) {
                 state.started = true;
             }
             event.preventDefault();
@@ -248,9 +307,10 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
     }
 
     function drawScene() {
-        const w = sisyphusCanvas.width;
-        const h = sisyphusCanvas.height;
+        const w = logicalCanvasWidth;
+        const h = logicalCanvasHeight;
         const boulderRadius = 24;
+        const scenePulse = state.lastTime * 0.006;
 
         ctx.clearRect(0, 0, w, h);
 
@@ -265,22 +325,47 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         const hillStartY = h - 55;
         const hillEndX = w - 120;
         const hillEndY = 75;
+        const hillTipX = hillEndX + 55;
+        const hillTipY = hillEndY - 5;
+        const ascentEndX = state.level === 2 ? hillTipX : hillEndX;
+        const ascentEndY = state.level === 2 ? hillTipY : hillEndY;
 
         ctx.beginPath();
         ctx.moveTo(0, h);
         ctx.lineTo(hillStartX - 30, hillStartY + 20);
-        ctx.lineTo(hillEndX + 55, hillEndY - 5);
+        ctx.lineTo(hillTipX, hillTipY);
         ctx.lineTo(w, hillEndY + 30);
         ctx.lineTo(w, h);
         ctx.closePath();
         ctx.fillStyle = colors.secondary;
         ctx.fill();
 
-        const progressX = hillStartX + (hillEndX - hillStartX) * state.progress;
-        const progressY = hillStartY + (hillEndY - hillStartY) * state.progress;
+        const progressX = hillStartX + (ascentEndX - hillStartX) * state.progress;
+        const progressY = hillStartY + (ascentEndY - hillStartY) * state.progress;
+        let actorX = progressX;
+        let actorY = progressY;
+
+        let boulderX = progressX;
+        let boulderY = progressY - 14;
+        if (state.level === 2 && (state.postWinRollActive || state.postWinRollComplete)) {
+            const tRaw = state.postWinRollDuration > 0 ? (state.postWinRollTime / state.postWinRollDuration) : 1;
+            const t = Math.max(0, Math.min(1, tRaw));
+            const easedT = 1 - Math.pow(1 - t, 2.2);
+
+            // Match uphill behavior: interpolate on slope line, then apply the same fixed vertical boulder offset.
+            const slopeTopX = hillTipX;
+            const slopeTopY = hillTipY;
+            const slopeBottomX = w + (boulderRadius * 3.4);
+            const slopeBottomY = hillEndY + 30 + 18;
+            const downhillX = slopeTopX + (slopeBottomX - slopeTopX) * easedT;
+            const slopeY = slopeTopY + (slopeBottomY - slopeTopY) * easedT;
+
+            boulderX = downhillX;
+            boulderY = slopeY - 14;
+        }
 
         ctx.save();
-        ctx.translate(progressX, progressY - 14);
+        ctx.translate(boulderX, boulderY);
         ctx.rotate(state.boulderRotation);
         ctx.beginPath();
         ctx.arc(0, 0, boulderRadius, 0, Math.PI * 2);
@@ -289,16 +374,17 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         ctx.restore();
 
         const isExhausted = state.exhaustionTimer > 0;
+        const watchingDownhill = state.level === 2 && (state.postWinRollActive || state.postWinRollComplete);
         const bodyTilt = state.pushing && !state.tumbleActive && !isExhausted ? -0.18 : -0.08;
         const tumbleOffsetX = state.tumbleActive ? -36 - Math.min(26, state.tumbleTime * 24) : -36;
         const tumbleOffsetY = state.tumbleActive ? 8 + Math.min(34, state.tumbleTime * 28) : 8;
-        const bodyX = progressX + tumbleOffsetX;
-        const bodyY = progressY + tumbleOffsetY;
-        const legOffset = Math.sin(state.stepPhase) * 4;
+        const bodyX = watchingDownhill ? (hillTipX - 44) : (actorX + tumbleOffsetX);
+        const bodyY = watchingDownhill ? (hillTipY + 12) : (actorY + tumbleOffsetY);
+        const legOffset = watchingDownhill ? (Math.sin(scenePulse * 0.9) * 0.8) : (Math.sin(state.stepPhase) * 4);
         const bodyAngle = state.tumbleActive ? state.manRotation : bodyTilt;
 
-        const boulderCenterX = progressX;
-        const boulderCenterY = progressY - 14;
+        const boulderCenterX = boulderX;
+        const boulderCenterY = boulderY;
         const relBoulderX = boulderCenterX - bodyX;
         const relBoulderY = boulderCenterY - bodyY;
         const cosInv = Math.cos(-bodyAngle);
@@ -328,6 +414,10 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         if (state.tumbleActive) {
             hand1 = { x: -12, y: -22 };
             hand2 = { x: 24, y: -18 };
+        } else if (watchingDownhill) {
+            const cheerPulse = Math.sin(scenePulse * 1.6) * 2.6;
+            hand1 = { x: -8, y: -22 - cheerPulse };
+            hand2 = { x: 20, y: -18 + cheerPulse * 0.2 };
         } else if (state.pushing && !isExhausted) {
             const leadArmOne = Math.sin(state.stepPhase * 0.9) >= 0;
             const recoil1 = { x: shoulder1.x + 8, y: shoulder1.y + 7 };
@@ -350,9 +440,9 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         ctx.stroke();
 
         const sweatIntensity = Math.max(0, Math.min(1, state.effortLevel));
-        const sweatThreshold = 0.42;
+        const sweatThreshold = 0.5;
         const visibleSweat = Math.max(0, (sweatIntensity - sweatThreshold) / (1 - sweatThreshold));
-        if (!state.tumbleActive && visibleSweat > 0) {
+        if (!state.tumbleActive && !watchingDownhill && visibleSweat > 0) {
             const sweatDrops = Math.min(4, 1 + Math.floor(visibleSweat * 4));
             const sweatPulse = Math.sin(state.stepPhase * 1.35);
             ctx.fillStyle = colors.primaryLight || colors.primary;
@@ -391,20 +481,82 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         ctx.stroke();
         ctx.restore();
 
-        ctx.beginPath();
-        ctx.moveTo(hillEndX + 30, hillEndY - 10);
-        ctx.lineTo(hillEndX + 30, hillEndY - 45);
-        ctx.strokeStyle = colors.textLight;
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        if (state.level === 2) {
+            const companionX = hillTipX - 18;
+            const companionY = hillTipY + 3;
+            const companionBounce = Math.sin(scenePulse) * 2.1;
+            const cheering = true;
 
-        ctx.beginPath();
-        ctx.moveTo(hillEndX + 30, hillEndY - 45);
-        ctx.lineTo(hillEndX + 14, hillEndY - 35);
-        ctx.lineTo(hillEndX + 30, hillEndY - 25);
-        ctx.closePath();
-        ctx.fillStyle = colors.primaryDark;
-        ctx.fill();
+            ctx.save();
+            ctx.translate(companionX, companionY + companionBounce);
+            ctx.rotate(-0.03);
+            ctx.strokeStyle = colors.primaryDark;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+
+            ctx.beginPath();
+            ctx.arc(0, -25, 5.5, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(0, -19);
+            ctx.lineTo(10, 3);
+            ctx.stroke();
+
+            ctx.beginPath();
+            const armLift = cheering ? (Math.sin(scenePulse * 1.3) * 4.5) : 0;
+            ctx.moveTo(3, -11);
+            ctx.lineTo(-10, -25 - armLift);
+            ctx.moveTo(7, -9);
+            ctx.lineTo(18, -28);
+            ctx.stroke();
+
+            const stride = Math.sin(scenePulse * 0.9) * 1.6;
+            ctx.beginPath();
+            ctx.moveTo(10, 3);
+            ctx.lineTo(3, 23 + stride);
+            ctx.moveTo(10, 3);
+            ctx.lineTo(16, 23 - stride);
+            ctx.stroke();
+
+            const poleBaseX = 24;
+            const poleBaseY = 3;
+            const poleTopY = -56;
+            ctx.beginPath();
+            ctx.moveTo(poleBaseX, poleBaseY);
+            ctx.lineTo(poleBaseX, poleTopY);
+            ctx.strokeStyle = colors.textLight;
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+
+            const flagWave = Math.sin(scenePulse * 2.4) * (watchingDownhill ? 2.3 : 3.8);
+            ctx.beginPath();
+            ctx.moveTo(poleBaseX, poleTopY);
+            ctx.lineTo(poleBaseX + 20, poleTopY + 4 + flagWave * 0.45);
+            ctx.lineTo(poleBaseX + 20, poleTopY + 16 + flagWave);
+            ctx.lineTo(poleBaseX, poleTopY + 12);
+            ctx.closePath();
+            ctx.fillStyle = colors.primaryDark;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        if (state.level !== 2) {
+            ctx.beginPath();
+            ctx.moveTo(hillEndX + 30, hillEndY - 10);
+            ctx.lineTo(hillEndX + 30, hillEndY - 45);
+            ctx.strokeStyle = colors.textLight;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(hillEndX + 30, hillEndY - 45);
+            ctx.lineTo(hillEndX + 14, hillEndY - 35);
+            ctx.lineTo(hillEndX + 30, hillEndY - 25);
+            ctx.closePath();
+            ctx.fillStyle = colors.primaryDark;
+            ctx.fill();
+        }
 
         const isDownhillTumble = state.tumbleActive && state.tumbleVelocity > 0.75 && state.progress < 0.97;
         if (isDownhillTumble) {
@@ -427,7 +579,7 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
 
         ctx.fillStyle = colors.text;
         ctx.font = '500 14px Inter, sans-serif';
-        ctx.fillText(`Progress: ${Math.round(state.progress * 100)}%`, 18, 24);
+        ctx.fillText(`${isEnglish ? 'Level' : 'Level'} ${state.level} • Progress: ${Math.round(state.progress * 100)}%`, 18, 24);
         ctx.restore();
     }
 
@@ -446,7 +598,7 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
                 state.started = false;
                 state.pushBurstTimer = 0;
                 state.pushing = false;
-                updateStatus(messages.ready);
+                updateStatus(getReadyMessage());
             }
         }
 
@@ -476,6 +628,10 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
                 state.pushBurstTimer = 0;
                 state.idleTime = 0;
                 state.crashTimer = 1.2;
+                if (state.roundCompleted) {
+                    showOverlay();
+                }
+                state.level2Unlocked = true;
                 updateStatus(messages.crashed);
             }
         } else if (state.started && !state.won) {
@@ -493,21 +649,21 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
                 state.idleTime = 0;
                 state.pushStreak += dt;
                 const summitLoad = Math.pow(state.progress, 1.7);
-                const climbResistance = 1 - Math.min(0.78, summitLoad * 0.78);
-                const fatigueWave = 0.72 + 0.28 * Math.sin((state.stepPhase * 0.55) + (state.progress * 10));
+                const climbResistance = 1 - Math.min(0.62, summitLoad * 0.62);
+                const fatigueWave = 0.8 + 0.2 * Math.sin((state.stepPhase * 0.55) + (state.progress * 10));
                 const effortWave = 0.9 + 0.2 * Math.sin((state.stepPhase * 0.18) + 0.6);
                 const effectivePushSpeed = state.pushSpeed * climbResistance * fatigueWave * effortWave;
                 const speedRatio = effectivePushSpeed / state.pushSpeed;
                 targetEffort = Math.max(0.25, Math.min(1, 0.25 + (summitLoad * 0.55) + ((1 - speedRatio) * 0.45)));
 
-                state.progress += Math.max(0.02, effectivePushSpeed) * dt;
+                state.progress += Math.max(0.035, effectivePushSpeed) * dt;
                 state.stepPhase += (9 + (effectivePushSpeed / state.pushSpeed) * 8) * dt;
-                updateStatus(messages.pushing);
+                updateStatus(getPushingMessage());
 
                 if (state.pushStreak >= state.nextExhaustAfter) {
-                    state.exhaustionTimer = randomRange(0.25, 0.55) + (summitLoad * 0.25);
+                    state.exhaustionTimer = randomRange(0.15, 0.35) + (summitLoad * 0.15);
                     state.pushStreak = 0;
-                    state.nextExhaustAfter = Math.max(0.85, randomRange(1.8, 3.4) - (summitLoad * 1.1));
+                    state.nextExhaustAfter = Math.max(1.4, randomRange(2.5, 4.5) - (summitLoad * 0.7));
                 }
             } else {
                 state.idleTime += dt;
@@ -524,9 +680,32 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
                 state.progress = 1;
                 state.won = true;
                 state.pushing = false;
-                updateStatus(messages.won);
-                startTumble();
+                if (state.level === 1) {
+                    updateStatus(messages.won);
+                    startTumble();
+                } else {
+                    state.started = false;
+                    state.exhaustionTimer = 0;
+                    state.idleTime = 0;
+                    state.pushBurstTimer = 0;
+                    state.postWinRollActive = true;
+                    state.postWinRollComplete = false;
+                    state.postWinRollTime = 0;
+                    updateStatus(messages.rollingAway);
+                }
             }
+        } else if (state.postWinRollActive) {
+            state.postWinRollTime += dt;
+            const rollProgress = Math.max(0, Math.min(1, state.postWinRollTime / state.postWinRollDuration));
+            state.boulderRotation += (6 + rollProgress * 8) * dt;
+            state.stepPhase += 3.2 * dt;
+
+            if (state.postWinRollTime >= state.postWinRollDuration) {
+                state.postWinRollTime = state.postWinRollDuration;
+                state.postWinRollActive = false;
+                state.postWinRollComplete = true;
+                    updateStatus(messages.wonLevel2);
+                }
         }
 
         const effortLerp = Math.min(1, dt * 4.5);
@@ -536,11 +715,29 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
         requestAnimationFrame(tick);
     }
 
-    gameResetBtn.addEventListener('click', resetGame);
+    gameResetBtn.addEventListener('click', () => resetGame(true));
+    if (level2Btn) {
+        level2Btn.addEventListener('click', () => {
+            if (!state.level2Unlocked) {
+                return;
+            }
+
+            state.level2Selected = true;
+            resetGame(false);
+        });
+    }
     window.addEventListener('keydown', (event) => setPushFromKey(event, true));
     window.addEventListener('keyup', (event) => setPushFromKey(event, false));
+    window.addEventListener('resize', () => {
+        const nextDpr = Math.max(1, window.devicePixelRatio || 1);
+        if (Math.abs(nextDpr - canvasDpr) > 0.01) {
+            setupCanvasResolution();
+            drawScene();
+        }
+    });
 
-    updateStatus(messages.ready);
+    setupCanvasResolution();
+    updateStatus(getReadyMessage());
     drawScene();
     requestAnimationFrame(tick);
 }
