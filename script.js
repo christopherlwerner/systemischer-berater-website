@@ -37,9 +37,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+        navbar.style.background = 'var(--nav-bg-scrolled)';
     } else {
-        navbar.style.background = 'var(--white)';
+        navbar.style.background = 'var(--nav-bg)';
     }
 });
 
@@ -147,13 +147,14 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
     const isEnglish = pageLanguage.startsWith('en');
     const rootStyles = getComputedStyle(document.documentElement);
     const colors = {
-        primary: rootStyles.getPropertyValue('--primary').trim(),
+        primary: rootStyles.getPropertyValue('--game-boulder').trim(),
         primaryLight: rootStyles.getPropertyValue('--primary-light').trim(),
-        primaryDark: rootStyles.getPropertyValue('--primary-dark').trim(),
-        secondary: rootStyles.getPropertyValue('--secondary').trim(),
-        text: rootStyles.getPropertyValue('--text').trim(),
-        textLight: rootStyles.getPropertyValue('--text-light').trim(),
-        white: rootStyles.getPropertyValue('--white').trim()
+        primaryDark: rootStyles.getPropertyValue('--game-figure').trim(),
+        secondary: rootStyles.getPropertyValue('--game-hill').trim(),
+        text: rootStyles.getPropertyValue('--game-text').trim(),
+        textLight: rootStyles.getPropertyValue('--game-detail').trim(),
+        white: rootStyles.getPropertyValue('--game-bg').trim(),
+        flashRgb: rootStyles.getPropertyValue('--flash-rgb').trim()
     };
 
     const messages = {
@@ -573,7 +574,7 @@ if (sisyphusCanvas && gameStatus && gameResetBtn) {
 
         if (state.crashTimer > 0) {
             const flashStrength = Math.min(0.32, state.crashTimer * 0.28);
-            ctx.fillStyle = `rgba(140, 30, 30, ${flashStrength})`;
+            ctx.fillStyle = `rgba(${colors.flashRgb}, ${flashStrength})`;
             ctx.fillRect(0, 0, w, h);
         }
 

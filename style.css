@@ -13,6 +13,44 @@
     --text: #333333;
     --text-light: #666666;
     --white: #ffffff;
+    --bg: var(--white);
+    --surface: var(--white);
+    --input-border: #ddd;
+    --heading-font: inherit;
+    --accent: var(--primary);
+    --accent-text: var(--white);
+    --line: rgba(44, 95, 93, 0.2);
+    --line-strong: rgba(44, 95, 93, 0.25);
+    --focus-ring: rgba(44, 95, 93, 0.1);
+    --nav-bg: var(--white);
+    --nav-bg-scrolled: rgba(255, 255, 255, 0.98);
+    --nav-text: var(--text);
+    --nav-accent: var(--primary);
+    --nav-active-text: var(--white);
+    --nav-hover-bg: var(--secondary);
+    --nav-line: var(--line-strong);
+    --logo: var(--primary);
+    --hero-bg: linear-gradient(135deg, var(--secondary) 0%, var(--white) 100%);
+    --hero-title: var(--primary-dark);
+    --hero-text: var(--text-light);
+    --btn-bg: var(--primary);
+    --btn-bg-hover: var(--primary-light);
+    --btn-text: var(--white);
+    --hero-btn-bg: var(--btn-bg);
+    --hero-btn-bg-hover: var(--btn-bg-hover);
+    --hero-btn-text: var(--btn-text);
+    --footer-bg: var(--primary-dark);
+    --footer-text: var(--white);
+    --overlay: rgba(30, 66, 64, 0.72);
+    --flash-rgb: 140, 30, 30;
+    --success-bg: #d4edda;
+    --success-text: #155724;
+    --game-bg: var(--surface);
+    --game-hill: var(--secondary);
+    --game-boulder: var(--primary);
+    --game-figure: var(--primary-dark);
+    --game-detail: var(--text-light);
+    --game-text: var(--text);
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
     --transition: all 0.3s ease;
@@ -27,7 +65,7 @@ body {
     font-weight: 400;
     line-height: 1.7;
     color: var(--text);
-    background-color: var(--white);
+    background-color: var(--bg);
 }
 
 /* Navigation */
@@ -36,7 +74,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: var(--white);
+    background: var(--nav-bg);
     box-shadow: var(--shadow);
     z-index: 1000;
     padding: 1rem 0;
@@ -60,7 +98,8 @@ body {
 .logo {
     font-size: 1.25rem;
     font-weight: 600;
-    color: var(--primary);
+    font-family: var(--heading-font);
+    color: var(--logo);
     text-decoration: none;
 }
 
@@ -72,14 +111,14 @@ body {
 
 .lang-switch {
     display: inline-flex;
-    border: 1px solid rgba(44, 95, 93, 0.25);
+    border: 1px solid var(--nav-line);
     border-radius: 999px;
     overflow: hidden;
 }
 
 .lang-link {
     text-decoration: none;
-    color: var(--text);
+    color: var(--nav-text);
     font-weight: 600;
     font-size: 0.8rem;
     padding: 0.35rem 0.7rem;
@@ -87,17 +126,17 @@ body {
 }
 
 .lang-link:hover {
-    background: var(--secondary);
+    background: var(--nav-hover-bg);
 }
 
 .lang-link.active {
-    background: var(--primary);
-    color: var(--white);
+    background: var(--nav-accent);
+    color: var(--nav-active-text);
 }
 
 .nav-menu a {
     text-decoration: none;
-    color: var(--text);
+    color: var(--nav-text);
     font-weight: 500;
     font-size: 0.95rem;
     transition: var(--transition);
@@ -111,12 +150,12 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--primary);
+    background: var(--nav-accent);
     transition: var(--transition);
 }
 
 .nav-menu a:hover {
-    color: var(--primary);
+    color: var(--nav-accent);
 }
 
 .nav-menu a:hover::after {
@@ -137,7 +176,7 @@ body {
     display: block;
     width: 25px;
     height: 2px;
-    background: var(--text);
+    background: var(--nav-text);
     transition: var(--transition);
 }
 
@@ -147,7 +186,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--white) 100%);
+    background: var(--hero-bg);
     padding: 6rem 2rem 4rem;
     text-align: center;
 }
@@ -157,24 +196,25 @@ body {
 }
 
 .hero h1 {
+    font-family: var(--heading-font);
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 600;
-    color: var(--primary-dark);
+    color: var(--hero-title);
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: var(--text-light);
+    color: var(--hero-text);
     margin-bottom: 2.5rem;
     font-weight: 300;
 }
 
 .btn-primary {
     display: inline-block;
-    background: var(--primary);
-    color: var(--white);
+    background: var(--btn-bg);
+    color: var(--btn-text);
     padding: 1rem 2.5rem;
     border-radius: 50px;
     text-decoration: none;
@@ -186,9 +226,18 @@ body {
 }
 
 .btn-primary:hover {
-    background: var(--primary-light);
+    background: var(--btn-bg-hover);
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
+}
+
+.hero .btn-primary {
+    background: var(--hero-btn-bg);
+    color: var(--hero-btn-text);
+}
+
+.hero .btn-primary:hover {
+    background: var(--hero-btn-bg-hover);
 }
 
 /* Sections */
@@ -202,6 +251,7 @@ body {
 }
 
 .section h2 {
+    font-family: var(--heading-font);
     font-size: 2.5rem;
     color: var(--primary-dark);
     margin-bottom: 1.5rem;
@@ -217,7 +267,7 @@ body {
 
 /* About Section */
 .about {
-    background: var(--white);
+    background: var(--bg);
 }
 
 .about-grid {
@@ -283,13 +333,13 @@ body {
     content: '✓';
     position: absolute;
     left: 0;
-    color: var(--primary);
+    color: var(--accent);
     font-weight: 600;
 }
 
 /* Therapie Section */
 .therapie {
-    background: var(--white);
+    background: var(--bg);
 }
 
 .therapie .section-intro {
@@ -334,19 +384,19 @@ body {
 }
 
 .tag {
-    background: var(--white);
+    background: var(--surface);
     color: var(--text);
     padding: 0.5rem 1.25rem;
     border-radius: 25px;
     font-size: 0.9rem;
-    border: 1px solid rgba(44, 95, 93, 0.2);
+    border: 1px solid var(--line);
     transition: var(--transition);
 }
 
 .tag:hover {
-    background: var(--primary);
-    color: var(--white);
-    border-color: var(--primary);
+    background: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
 }
 
 /* Angebote Section */
@@ -362,7 +412,7 @@ body {
 }
 
 .offer-card {
-    background: var(--white);
+    background: var(--surface);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow);
@@ -409,7 +459,7 @@ body {
 
 /* Praxis Section */
 .praxis {
-    background: var(--white);
+    background: var(--bg);
 }
 
 .praxis-grid {
@@ -462,7 +512,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    background: var(--white);
+    background: var(--surface);
     padding: 2.5rem;
     border-radius: 12px;
     box-shadow: var(--shadow);
@@ -488,12 +538,13 @@ body {
 .form-group select,
 .form-group textarea {
     padding: 0.875rem 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--input-border);
+    color: var(--text);
     border-radius: 8px;
     font-family: inherit;
     font-size: 1rem;
     transition: var(--transition);
-    background: var(--white);
+    background: var(--surface);
 }
 
 .form-group input:focus,
@@ -501,7 +552,7 @@ body {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(44, 95, 93, 0.1);
+    box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .form-group textarea {
@@ -549,7 +600,7 @@ body {
 
 .game-shell {
     position: relative;
-    background: var(--white);
+    background: var(--surface);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: var(--shadow);
@@ -579,7 +630,7 @@ body {
     width: 100%;
     height: auto;
     border-radius: 10px;
-    background: linear-gradient(180deg, var(--white) 0%, var(--secondary) 100%);
+    background: linear-gradient(180deg, var(--surface) 0%, var(--secondary) 100%);
 }
 
 .game-overlay {
@@ -592,7 +643,7 @@ body {
     gap: 1rem;
     padding: 1.5rem;
     border-radius: 12px;
-    background: rgba(30, 66, 64, 0.72);
+    background: var(--overlay);
     color: var(--white);
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 600;
@@ -625,8 +676,8 @@ body {
 
 /* Footer */
 .footer {
-    background: var(--primary-dark);
-    color: var(--white);
+    background: var(--footer-bg);
+    color: var(--footer-text);
     padding: 2rem;
 }
 
@@ -649,7 +700,7 @@ body {
 }
 
 .footer-links a {
-    color: var(--white);
+    color: var(--footer-text);
     text-decoration: none;
     font-size: 0.9rem;
     opacity: 0.8;
@@ -699,7 +750,7 @@ body {
         top: 70px;
         left: 0;
         right: 0;
-        background: var(--white);
+        background: var(--nav-bg);
         flex-direction: column;
         padding: 2rem;
         gap: 1.5rem;
@@ -782,8 +833,8 @@ body {
 
 /* Success Message */
 .success-message {
-    background: #d4edda;
-    color: #155724;
+    background: var(--success-bg);
+    color: var(--success-text);
     padding: 1rem;
     border-radius: 8px;
     text-align: center;
@@ -795,3 +846,369 @@ body {
         grid-column: span 1;
     }
 }
+
+/* ==========================================================================
+   THEME PREVIEW (temporary) — remove after choosing a palette.
+   Activated via ?theme=a|b|c|d (see theme-preview.js).
+   Poster palette: navy #2f3e6b, mint #93d3c1, rose #d4868a, mauve #6b4a68
+   ========================================================================== */
+
+/* A — Quiet swap: navy primary, pale mint sections, rose accents */
+:root[data-theme="a"],
+:root[data-theme="d"] {
+    --primary: #2f3e6b;
+    --primary-light: #45588f;
+    --primary-dark: #1f2a4d;
+    --secondary: #e6f4ef;
+    --text: #2b2f3a;
+    --text-light: #5b6070;
+    --accent: #b0555d;
+    --line: rgba(47, 62, 107, 0.18);
+    --line-strong: rgba(47, 62, 107, 0.25);
+    --focus-ring: rgba(47, 62, 107, 0.12);
+    --overlay: rgba(31, 42, 77, 0.78);
+    --flash-rgb: 176, 85, 93;
+    --success-bg: #e6f4ef;
+    --success-text: #1f5c4d;
+}
+
+/* B — Poster-faithful: navy hero & nav, strong mint sections, rose buttons */
+:root[data-theme="b"] {
+    --primary: #2f3e6b;
+    --primary-light: #45588f;
+    --primary-dark: #1f2a4d;
+    --secondary: #a8dccd;
+    --text: #22283a;
+    --text-light: #3f4658;
+    --accent: #b0555d;
+    --line: rgba(47, 62, 107, 0.18);
+    --line-strong: rgba(47, 62, 107, 0.25);
+    --focus-ring: rgba(47, 62, 107, 0.12);
+    --nav-bg: #1f2a4d;
+    --nav-bg-scrolled: rgba(31, 42, 77, 0.97);
+    --nav-text: #f2f4f8;
+    --nav-accent: #93d3c1;
+    --nav-active-text: #1f2a4d;
+    --nav-hover-bg: rgba(255, 255, 255, 0.12);
+    --nav-line: rgba(255, 255, 255, 0.3);
+    --logo: #93d3c1;
+    --hero-bg: linear-gradient(160deg, #2f3e6b 0%, #1f2a4d 100%);
+    --hero-title: #ffffff;
+    --hero-text: #93d3c1;
+    --btn-bg: #b0555d;
+    --btn-bg-hover: #c2666e;
+    --footer-bg: #1f2a4d;
+    --overlay: rgba(31, 42, 77, 0.8);
+    --flash-rgb: 176, 85, 93;
+    --success-bg: #e6f4ef;
+    --success-text: #1f5c4d;
+}
+
+/* C — Soft & mint-led: mint atmosphere and buttons, navy text, almost no rose */
+:root[data-theme="c"] {
+    --primary: #347a6b;
+    --primary-light: #4a9483;
+    --primary-dark: #1f2a4d;
+    --secondary: #dcefe8;
+    --text: #2b2f3a;
+    --text-light: #56606a;
+    --accent: #347a6b;
+    --line: rgba(52, 122, 107, 0.22);
+    --line-strong: rgba(52, 122, 107, 0.3);
+    --focus-ring: rgba(52, 122, 107, 0.15);
+    --logo: #1f2a4d;
+    --hero-bg: linear-gradient(135deg, #cdeae0 0%, #f4faf8 100%);
+    --btn-bg: #93d3c1;
+    --btn-bg-hover: #a9ddce;
+    --btn-text: #1f2a4d;
+    --footer-bg: #93d3c1;
+    --footer-text: #1f2a4d;
+    --overlay: rgba(31, 42, 77, 0.72);
+    --flash-rgb: 176, 85, 93;
+    --success-bg: #dcefe8;
+    --success-text: #1f5c4d;
+}
+
+/* D — Painted hero: A everywhere, plus the painting's navy → mauve → rose sky */
+:root[data-theme="d"] {
+    --hero-bg: linear-gradient(160deg, #2f3e6b 0%, #6b4a68 55%, #d4868a 100%);
+    --hero-title: #ffffff;
+    --hero-text: #f6e3e2;
+    --hero-btn-bg: #93d3c1;
+    --hero-btn-bg-hover: #aadfcf;
+    --hero-btn-text: #1f2a4d;
+}
+
+/* ---- Round 2: poster-led options ---- */
+
+/* E — Night (dark): the painting's night sky as the page, rose as the glow, mint as the band */
+:root[data-theme="e"] {
+    --primary: #e0949a;
+    --primary-light: #eaa9ad;
+    --primary-dark: #f3c9c4;
+    --secondary: #3b2c4d;
+    --bg: #1d2548;
+    --surface: #283261;
+    --text: #ece6ee;
+    --text-light: #c3b8c8;
+    --accent: #93d3c1;
+    --accent-text: #1b2446;
+    --line: rgba(255, 255, 255, 0.15);
+    --line-strong: rgba(255, 255, 255, 0.25);
+    --focus-ring: rgba(224, 148, 154, 0.35);
+    --input-border: rgba(255, 255, 255, 0.2);
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 10px 34px rgba(0, 0, 0, 0.4);
+    --nav-bg: #161d3b;
+    --nav-bg-scrolled: rgba(22, 29, 59, 0.96);
+    --nav-text: #ece6ee;
+    --nav-accent: #e0949a;
+    --nav-active-text: #1b2446;
+    --nav-hover-bg: rgba(255, 255, 255, 0.1);
+    --nav-line: rgba(255, 255, 255, 0.25);
+    --logo: #93d3c1;
+    --hero-bg:
+        radial-gradient(ellipse 55% 40% at 50% 92%, rgba(224, 148, 154, 0.55) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 55% at 50% 75%, rgba(107, 74, 104, 0.7) 0%, transparent 75%),
+        linear-gradient(180deg, #2f3e6b 0%, #1d2548 60%, #2b2447 100%);
+    --hero-title: #f7ece9;
+    --hero-text: #93d3c1;
+    --btn-bg: #e0949a;
+    --btn-bg-hover: #eaa9ad;
+    --btn-text: #1b2446;
+    --footer-bg: #93d3c1;
+    --footer-text: #1b2446;
+    --overlay: rgba(15, 20, 40, 0.82);
+    --flash-rgb: 224, 148, 154;
+    --success-bg: #93d3c1;
+    --success-text: #1b2446;
+    --game-bg: #1d2548;
+    --game-hill: #3b2c4d;
+    --game-boulder: #e0949a;
+    --game-figure: #ece6ee;
+    --game-detail: #c3b8c8;
+    --game-text: #ece6ee;
+}
+
+/* F — Poster: painted blocks + mint band, navy frame, Bodoni serif headings */
+:root[data-theme="f"],
+:root[data-theme="f2"] {
+    --primary: #2f3e6b;
+    --primary-light: #45588f;
+    --primary-dark: #1f2a4d;
+    --secondary: #93d3c1;
+    --bg: #d9f1ea;
+    --surface: #f4fbf8;
+    --text: #1f2a4d;
+    --text-light: #3e4a6b;
+    --accent: #b0555d;
+    --line: rgba(31, 42, 77, 0.2);
+    --line-strong: rgba(31, 42, 77, 0.3);
+    --focus-ring: rgba(47, 62, 107, 0.18);
+    --input-border: rgba(31, 42, 77, 0.2);
+    --heading-font: 'Bodoni Moda', 'Didot', 'Bodoni 72', serif;
+    --nav-bg: #1f2a4d;
+    --nav-bg-scrolled: rgba(31, 42, 77, 0.97);
+    --nav-text: #f2f4f8;
+    --nav-accent: #93d3c1;
+    --nav-active-text: #1f2a4d;
+    --nav-hover-bg: rgba(255, 255, 255, 0.12);
+    --nav-line: rgba(255, 255, 255, 0.3);
+    --logo: #93d3c1;
+    --hero-bg:
+        radial-gradient(ellipse 30% 35% at 22% 85%, rgba(224, 148, 154, 0.75) 0%, transparent 70%),
+        radial-gradient(ellipse 28% 32% at 78% 80%, rgba(224, 148, 154, 0.6) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 60% at 50% 70%, rgba(107, 74, 104, 0.85) 0%, transparent 75%),
+        radial-gradient(ellipse 45% 30% at 65% 25%, rgba(120, 140, 190, 0.35) 0%, transparent 70%),
+        linear-gradient(180deg, #2f3e6b 0%, #34457a 45%, #4a3a5c 100%);
+    --hero-title: #f7ece9;
+    --hero-text: #93d3c1;
+    --hero-btn-bg: #93d3c1;
+    --hero-btn-bg-hover: #aadfcf;
+    --hero-btn-text: #1f2a4d;
+    --footer-bg: #1f2a4d;
+    --overlay: rgba(31, 42, 77, 0.82);
+    --flash-rgb: 212, 134, 138;
+    --success-bg: #93d3c1;
+    --success-text: #1f2a4d;
+    --game-bg: #f4fbf8;
+    --game-hill: #93d3c1;
+    --game-boulder: #6b4a68;
+    --game-figure: #1f2a4d;
+}
+
+:root[data-theme="f"] .hero h1,
+:root[data-theme="f2"] .hero h1,
+:root[data-theme="f"] .section h2,
+:root[data-theme="f2"] .section h2 {
+    font-weight: 500;
+    font-variant-caps: small-caps;
+    letter-spacing: 0.02em;
+}
+
+:root[data-theme="f"] .approach-card h3,
+:root[data-theme="f2"] .approach-card h3,
+:root[data-theme="f"] .offer-content h3,
+:root[data-theme="f2"] .offer-content h3,
+:root[data-theme="f"] .qualifications h3,
+:root[data-theme="f2"] .qualifications h3,
+:root[data-theme="f"] .contact-info h3,
+:root[data-theme="f2"] .contact-info h3 {
+    font-family: var(--heading-font);
+    font-weight: 600;
+}
+
+/* The game section becomes a piece of the painting */
+:root[data-theme="f"] .sisyphus-game,
+:root[data-theme="f2"] .sisyphus-game {
+    background:
+        radial-gradient(ellipse 50% 60% at 85% 100%, rgba(224, 148, 154, 0.45) 0%, transparent 70%),
+        linear-gradient(180deg, #2f3e6b 0%, #4a3a5c 100%);
+    --primary-dark: #f7ece9;
+    --text-light: #d8cbd8;
+}
+
+:root[data-theme="f"] .sisyphus-game .game-shell,
+:root[data-theme="f2"] .sisyphus-game .game-shell {
+    --primary-dark: #1f2a4d;
+    --text-light: #3e4a6b;
+}
+
+/* F2 — Poster, sharp: F with rectangular shapes, thin rules instead of shadows */
+:root[data-theme="f2"] {
+    --shadow: none;
+    --shadow-hover: none;
+}
+
+:root[data-theme="f2"] .lang-switch,
+:root[data-theme="f2"] .lang-link,
+:root[data-theme="f2"] .btn-primary,
+:root[data-theme="f2"] .tag,
+:root[data-theme="f2"] .image-placeholder,
+:root[data-theme="f2"] .about-photo,
+:root[data-theme="f2"] .qualifications,
+:root[data-theme="f2"] .approach-card,
+:root[data-theme="f2"] .offer-card,
+:root[data-theme="f2"] .detail-item,
+:root[data-theme="f2"] .contact-form,
+:root[data-theme="f2"] .form-group input,
+:root[data-theme="f2"] .form-group select,
+:root[data-theme="f2"] .form-group textarea,
+:root[data-theme="f2"] .game-shell,
+:root[data-theme="f2"] #sisyphusCanvas,
+:root[data-theme="f2"] .game-overlay,
+:root[data-theme="f2"] .success-message {
+    border-radius: 2px;
+}
+
+:root[data-theme="f2"] .btn-primary {
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+:root[data-theme="f2"] .btn-primary:hover {
+    transform: none;
+}
+
+:root[data-theme="f2"] .approach-card,
+:root[data-theme="f2"] .offer-card,
+:root[data-theme="f2"] .contact-form,
+:root[data-theme="f2"] .game-shell {
+    border: 1px solid var(--line-strong);
+}
+
+:root[data-theme="f2"] .approach-card:hover,
+:root[data-theme="f2"] .offer-card:hover {
+    transform: none;
+    border-color: var(--primary);
+}
+
+:root[data-theme="f2"] .section h2 {
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line-strong);
+}
+
+:root[data-theme="f2"] .sisyphus-game h2 {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+/* G — Dusk (warm, light): blush and mauve base, navy text, mint as the cool counterpoint */
+:root[data-theme="g"] {
+    --primary: #6b4a68;
+    --primary-light: #845d80;
+    --primary-dark: #2f3e6b;
+    --secondary: #efd8d8;
+    --bg: #f8eeed;
+    --surface: #fffaf9;
+    --text: #2a2238;
+    --text-light: #5e5068;
+    --accent: #2f7f6c;
+    --line: rgba(107, 74, 104, 0.2);
+    --line-strong: rgba(107, 74, 104, 0.3);
+    --focus-ring: rgba(107, 74, 104, 0.15);
+    --input-border: rgba(107, 74, 104, 0.22);
+    --nav-bg: #fffaf9;
+    --nav-bg-scrolled: rgba(255, 250, 249, 0.97);
+    --nav-hover-bg: #efd8d8;
+    --logo: #6b4a68;
+    --hero-bg: linear-gradient(180deg, #c9a0b5 0%, #e5b1b0 50%, #f8eeed 100%);
+    --hero-title: #1f2a4d;
+    --hero-text: #4a3b52;
+    --hero-btn-bg: #2f3e6b;
+    --hero-btn-bg-hover: #45588f;
+    --footer-bg: #6b4a68;
+    --overlay: rgba(74, 52, 76, 0.82);
+    --flash-rgb: 212, 134, 138;
+    --success-bg: #d6efe7;
+    --success-text: #1f5c4d;
+    --game-bg: #fffaf9;
+    --game-hill: #efd8d8;
+    --game-boulder: #6b4a68;
+    --game-figure: #2f3e6b;
+}
+
+/* Floating theme switcher */
+.theme-switcher {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem;
+    background: rgba(20, 20, 28, 0.88);
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    font-family: 'Inter', sans-serif;
+}
+
+.theme-switcher span {
+    color: #c9ccd4;
+    font-size: 0.75rem;
+    padding: 0 0.4rem;
+}
+
+.theme-switcher a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 2rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    text-align: center;
+}
+
+.theme-switcher a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.theme-switcher a.active {
+    background: #ffffff;
+    color: #14141c;
+}
+/* ===================== END THEME PREVIEW ===================== */
